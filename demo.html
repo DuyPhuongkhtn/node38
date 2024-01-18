@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="noiDung">User</h1>
+    <h1 id="number">0</h1>
+    <button id="btn-click">Mời em bấm</button>
+    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+    <script>
+        const socket = io("ws://localhost:8080");
+        // client nhận event từ server
+        socket.on("send-id", (socketId) => {
+            // socketId <==> socket,id
+            document.getElementById("noiDung").innerHTML += `User ${socketId} đã kết nối <br />`;
+        });
+
+        // B1: client gửi event tới server
+        // rằng tao muốn thêm 1 đơn vị cho số này
+        // thông qua button
+        document.getElementById("btn-click").onclick = () => {
+            socket.emit("request-increment-number", "")
+        }
+
+        // B3: client nhận event từ server
+        socket.on("response-incre-number", (demSo) => {
+            document.getElementById("number").innerHTML = demSo;
+        })
+    </script>
+</body>
+</html>
